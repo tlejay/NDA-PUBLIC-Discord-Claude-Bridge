@@ -1,0 +1,20 @@
+{
+  "name": "nda-discord-claude-bridge",
+  "version": "1.0.0",
+  "description": "Bridge Discord messages into a live Claude Code session — push-based, no polling",
+  "type": "module",
+  "scripts": {
+    "bot": "node --experimental-strip-types src/bot.ts",
+    "init": "node --experimental-strip-types src/init.ts"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

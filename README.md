@@ -1,6 +1,6 @@
 [เนื้อหาภาษาไทย อยู่ด้านล่าง]
 
-# NDA PUBLIC — Discord × Claude Code (Official Plugin)
+# Discord × Claude Code (Official Plugin)
 
 Control a live **Claude Code** session directly from Discord — type in a channel, Claude replies back. No polling. No custom server. No file tailing.
 

@@ -26,8 +26,45 @@ Claude Code session receives <channel> event
 
 No separate bot process. No temp files. No `/loop`. The plugin lives inside Claude Code itself.
 
----
+## What you can build with this
 
+Beyond simple Q&A, the Discord ↔ Claude Code bridge unlocks several useful patterns:
+
+### 1. Share one Claude session across a team
+
+Add multiple Discord user IDs to the allowlist. Everyone sends commands from the same channel — Claude Code processes them in the same session.
+
+**Practical for:** small teams where members take turns, internal tools where one operator runs Claude and teammates send requests.
+
+> **⚠️ Terms of Service notice**
+> Claude Pro and Max subscriptions are **personal accounts**. Sharing access across multiple individuals may violate [Anthropic's Usage Policy](https://www.anthropic.com/legal/usage-policy). For legitimate multi-user production use, use **Claude for Teams** or the **Anthropic API** instead. This pattern is documented for technical awareness — use responsibly and within your subscription terms.
+
+### 2. Schedule tasks beyond Claude Code's built-in limit
+
+Claude Code's `/schedule` feature has a cap on concurrent scheduled tasks. Workaround: put the cron logic inside the Discord bot (`node-cron`) and have it send a message to Claude Code at the scheduled time. Claude Code receives it and runs the task.
+
+**How it works:**
+```
+Discord bot (node-cron) → sends message at scheduled time
+        ↓
+Claude Code receives it → executes task → replies to Discord
+```
+
+> **Fact-check note:** The exact limit of Claude Code's built-in `/schedule` may change across versions. Verify current limits in the [official Claude Code docs](https://docs.anthropic.com/claude-code) before relying on this workaround.
+
+### 3. Control Claude Code from your phone
+
+Discord has native iOS and Android apps. Type a command from your phone → Claude Code runs it on your machine or server. No SSH, no VPN needed.
+
+### 4. Shared team audit trail
+
+Every command and every reply appears in the Discord channel. The channel itself becomes a persistent, searchable log — visible to the whole team in real time.
+
+### 5. Event-driven workflows
+
+Wire GitHub webhooks, Vercel deploy hooks, or any other service into Discord. The bot forwards relevant events to Claude Code as messages → Claude becomes an event processor without any extra API surface.
+
+---
 ## Prerequisites
 
 | Requirement | Install |
@@ -269,8 +306,34 @@ It worked, but required a separate running process, manual `/loop` setup, and fi
 
 > **หมายเหตุ:** README นี้อัปเดตแล้ว — วิธีการเดิม (`bot.ts` + `/tmp` inbox + `tail -f`) ถูกแทนที่ด้วย official plugin ของ Anthropic ซึ่งง่ายกว่าและเสถียรกว่ามาก
 
----
+## สิ่งที่ต่อยอดได้จาก Bridge นี้
 
+### 1. ใช้ Claude Session เดียวกันทั้งทีม
+
+เพิ่ม User ID หลายคนใน allowlist → ทุกคนส่งคำสั่งจาก Discord channel เดียวกัน → Claude Code session เดียวรับและตอบ
+
+> **⚠️ ข้อควรระวังด้าน Terms of Service**
+> Claude Pro และ Max เป็น **บัญชีส่วนตัว** การแชร์ access ข้ามบุคคลอาจผิด [Anthropic Usage Policy](https://www.anthropic.com/legal/usage-policy) หากใช้งาน production จริงกับหลายคน ให้ใช้ **Claude for Teams** หรือ **Anthropic API** แทน — เนื้อหานี้นำเสนอเพื่อความเข้าใจทางเทคนิค ไม่ใช่การส่งเสริมให้ละเมิด ToS
+
+### 2. Schedule เกิน limit ของ Claude Code
+
+`/schedule` ของ Claude Code มีจำนวนจำกัด แก้ได้โดยใส่ cron logic ไว้ใน Discord bot (`node-cron`) แล้วให้ bot ส่งข้อความเข้า session ตามเวลา → Claude รับและทำงาน
+
+> **หมายเหตุ:** ตัวเลข limit ที่แน่นอนอาจเปลี่ยนตาม version — ตรวจสอบใน [Claude Code docs](https://docs.anthropic.com/claude-code) ก่อนนำไปใช้จริง
+
+### 3. คุม Claude Code จากมือถือ
+
+Discord มี app iOS/Android → พิมพ์คำสั่งจากโทรศัพท์ → Claude Code รันบน machine หรือ server ของคุณ — ไม่ต้องต่อ SSH
+
+### 4. Audit trail ของทีม
+
+ทุกคำสั่งและทุก reply ปรากฏใน Discord channel → channel กลายเป็น log ถาวรที่ทีมเห็นและค้นหาได้
+
+### 5. Event-driven workflows
+
+ต่อ GitHub webhook, Vercel deploy hook หรือ service อื่นเข้า Discord → bot forward event ให้ Claude Code → Claude กลายเป็น event processor โดยไม่ต้องสร้าง API endpoint เพิ่ม
+
+---
 ## ความต้องการของระบบ
 
 ```bash

@@ -254,19 +254,6 @@ Chrome (Playwright) → Discord Gateway → Plugin (Bun) → Claude Code session
 
 ---
 
-## Troubleshooting
-
-| Symptom | Cause | Fix |
-|---|---|---|
-| No Bun subprocess visible in `ps aux` | `~/.bun/bin` not in PATH when Claude started | Add `export PATH="$HOME/.bun/bin:$PATH"` to shell profile; restart Claude |
-| `claude plugin list` shows `✘ disabled` | Plugin never enabled | `claude plugin enable discord@claude-plugins-official` |
-| Messages sent in Discord but nothing in Claude | Session started without `--channels` flag | Restart: `claude --channels plugin:discord@claude-plugins-official` |
-| Bot is online but Claude doesn't receive | Two competing bot connections on the same token | Kill any other process using the same token |
-| `Missing Access` or bot not in server | Bot not yet invited | Redo Step 4 |
-| Message Content Intent not enabled | Privileged intent missing | Discord Developer Portal → Bot → enable Message Content Intent → Save |
-
----
-
 ## Security
 
 - **Never commit** your bot token. It stays in `~/.claude/channels/discord/.env` (gitignored).
@@ -425,12 +412,3 @@ claude --channels plugin:discord@claude-plugins-official
 เปิด Chrome ผ่าน Playwright → ส่งข้อความจริง 3 ข้อความ → ตรวจว่าเข้า Claude Code ครบ
 
 ---
-
-## แก้ปัญหา
-
-| อาการ | สาเหตุ | วิธีแก้ |
-|---|---|---|
-| ไม่มี bun subprocess | `~/.bun/bin` ไม่อยู่ใน PATH | เพิ่ม export PATH ใน shell profile แล้ว restart Claude |
-| Plugin แสดง `✘ disabled` | ยังไม่ได้ enable | `claude plugin enable discord@claude-plugins-official` |
-| ส่งแล้วไม่เข้า Claude | Session ไม่มี `--channels` | Restart ด้วย flag ครบ |
-| Bot online แต่ Claude ไม่รับ | มี connection แย่ง token อยู่ | ปิด process อื่นที่ใช้ token เดียวกัน |
